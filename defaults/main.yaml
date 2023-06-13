@@ -1,18 +1,18 @@
 hadoop_target_dir: /opt/hadoop
 hadoop_distro_home: "{{ hadoop_target_dir }}/current"
 hadoop_distro_url: https://www-eu.apache.org/dist/hadoop/common/hadoop-3.1.3/hadoop-3.1.3.tar.gz
-hadoop_distro_local_pkg: 
+hadoop_distro_local_pkg:
 
 hadoop_jre_url: https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u222-b10/OpenJDK8U-jre_x64_linux_hotspot_8u222b10.tar.gz
-hadoop_jre_local_pkg: 
+hadoop_jre_local_pkg:
 
-hadoop_sample_jar_urls: 
+hadoop_sample_jar_urls:
   - https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-mapreduce-examples/3.1.3/hadoop-mapreduce-examples-3.1.3.jar
 hadoop_sample_jar_pkgs:
 
 hadoop_cluster_name: mycluster
 
-hadoop_reformat_namenode: False
+hadoop_reformat_namenode: false
 
 
 # core-site.xml
@@ -33,12 +33,12 @@ hadoop_yarn_site: {}
 hadoop_yarn_site_defaults:
   yarn.acl.enable: "false"
   yarn.admin.acl: "*"
-  yarn.log-aggregation-enable: "false" 
+  yarn.log-aggregation-enable: "false"
   yarn.resourcemanager.hostname: "{{ groups['hadoop_managers'][0] }}"
   yarn.resourcemanager.scheduler.class: org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler
   yarn.scheduler.minimum-allocation-mb: 1
   yarn.scheduler.maximum-allocation-mb: 2048
-  
+
   yarn.nodemanager.resource.memory-mb: 2048
   yarn.nodemanager.vmem-pmem-ratio: 2.1
   yarn.nodemanager.local-dirs: "{{ hadoop_target_dir }}/data/nodemanager/local"
@@ -70,4 +70,3 @@ hadoop_mapred_site_defaults:
   mapreduce.jobhistory.webapp.address: "{{ groups['hadoop_managers'][0] }}:19888"
   mapreduce.jobhistory.intermediate-done-dir: /mr-history/tmp
   mapreduce.jobhistory.done-dir: /mr-history/done
-

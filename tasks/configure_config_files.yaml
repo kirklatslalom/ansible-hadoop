@@ -1,9 +1,10 @@
-- name: configure config files
-  template:
+- name: Configure config files
+  ansible.builtin.template:
     src: ./templates/{{ item }}.j2
     dest: "{{ hadoop_distro_home }}/etc/hadoop/{{ item }}"
     owner: hdfs
     group: hadoop
+    mode: "0555"
   loop:
     - core-site.xml
     - hdfs-site.xml

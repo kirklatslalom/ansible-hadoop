@@ -1,35 +1,39 @@
-- name: set hadoop package name from URL
+- name: Set hadoop package name from URL
   when: hadoop_distro_local_pkg == None
-  set_fact: hadoop_distro_pkg_name={{ hadoop_distro_url.split('/')[-1] }}
+  ansible.builtin.set_fact:
+    hadoop_distro_pkg_name={{ hadoop_distro_url.split('/')[-1] }}
 
-- name: set hadoop package name from local package
+- name: Set hadoop package name from local package
   when: hadoop_distro_local_pkg != None
-  set_fact: hadoop_distro_pkg_name={{ hadoop_distro_local_pkg.split('/')[-1] }}
+  ansible.builtin.set_fact:
+    hadoop_distro_pkg_namer={{ hadoop_distro_local_pkg.split('/')[-1] }}
 
-- name: download hadoop distro    
+- name: Download hadoop distro
   when: hadoop_distro_local_pkg == None
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ hadoop_distro_url }}"
     dest: "{{ hadoop_target_dir }}/{{ hadoop_distro_pkg_name }}"
+    mode: "0555"
   tags: hadoop, installHadoop
 
-- name: copy local hadoop package to remote system
+- name: Copy local hadoop package to remote system
   when: hadoop_jre_local_pkg != None
-  copy:
+  ansible.builtin.copy:
     src: "{{ hadoop_distro_local_pkg }}"
     dest: "{{ hadoop_target_dir }}/{{ hadoop_distro_pkg_name }}"
+    mode: "0555"
 
-- name: unpack hadoop distro
-  unarchive:
+- name: Unpack hadoop distro
+  ansible.builtin.unarchive:
     src: "{{ hadoop_target_dir }}/{{ hadoop_distro_pkg_name }}"
     dest: "{{ hadoop_target_dir }}"
-    list_files: yes
-    remote_src: yes
+    list_files: true
+    remote_src: true
   register: archive_contents
   tags: hadoop, installHadoop
 
-- name: create link to current hadoop distro
-  file:
+- name: Create link to current hadoop distro
+  ansible.builtin.file:
     path: "{{ hadoop_distro_home }}"
     src: "{{ archive_contents.files[0] }}"
     state: link

@@ -6,7 +6,7 @@ node-1
 node-1
 node-2
 
-[hadoop_managers] 
+[hadoop_managers]
 # these hosts will run: ResourceManager, NodeManager and MapReduce Job History server
 node-1
 
@@ -20,7 +20,7 @@ hadoop_managers
 hadoop_reformat_namenode=True
 
 # Shared Edits Dir is needed for HA if multiple NameNodes are specified, use only if more than one NameNode is specified
-# This directory must be a shared directory and accessible from all the NameNodes 
+# This directory must be a shared directory and accessible from all the NameNodes
 # (e.g. set up a NFS share and mount it on all the NameNodes)
 # hadoop_hdfs_site={"dfs.namenode.shared.edits.dir": "/mnt/gpfs0/hdfs-ha"}
 

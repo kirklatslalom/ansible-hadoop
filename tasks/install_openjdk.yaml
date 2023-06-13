@@ -1,43 +1,45 @@
-- name: create JRE target directory
-  file:
+- name: Create JRE target directory
+  ansible.builtin.file:
     path: "{{ jre_target_dir }}"
     state: directory
+    mode: "0755"
   tags: jre
 
-- name: set JRE package name from URL
+- name: Set JRE package name from URL
   when: jre_local_pkg == None
-  set_fact: jre_pkg_name={{ jre_url.split('/')[-1] }}
+  ansible.builtin.set_fact: jre_pkg_name={{ jre_url.split('/')[-1] }}
 
-- name: set JRE package name from local package
+- name: Set JRE package name from local package
   when: jre_local_pkg != None
-  set_fact: jre_pkg_name={{ jre_url.split('/')[-1] }}
+  ansible.builtin.set_fact: jre_pkg_name={{ jre_url.split('/')[-1] }}
 
-- name: download JRE
+- name: Download JRE
   when: jre_local_pkg == None
-  get_url: 
+  ansible.builtin.get_url:
     url: "{{ jre_url }}"
     dest: "{{ jre_target_dir }}/{{ jre_pkg_name }}"
+    mode: "0750"
   tags: jre
 
-- name: copy local JRE package to remote system
+- name: Copy local JRE package to remote system
   when: jre_local_pkg != None
-  copy:
+  ansible.builtin.copy:
     src: "{{ jre_local_pkg }}"
     dest: "{{ jre_target_dir }}/{{ jre_pkg_name }}"
- 
-- name: unpack JRE
-  unarchive:
+    mode: "0750"
+
+- name: Unpack JRE
+  ansible.builtin.unarchive:
     src: "{{ jre_target_dir }}/{{ jre_url.split('/')[-1] }}"
     dest: "{{ jre_target_dir }}"
-    remote_src: yes
-    list_files: yes
+    remote_src: true
+    list_files: true
   register: archive_contents
   tags: jre
 
-- name: create link to jre
-  file:
+- name: Create link to jre
+  ansible.builtin.file:
     path: "{{ jre_target_dir }}/current"
     src: "{{ archive_contents.files[0] }}"
     state: link
   tags: jre
-  

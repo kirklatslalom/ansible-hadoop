@@ -23,7 +23,7 @@ node-1
 node-1
 node-2
 
-[hadoop_managers] 
+[hadoop_managers]
 # these hosts will run: ResourceManager, NodeManager and MapReduce Job History server
 node-1
 
@@ -37,7 +37,7 @@ hadoop_managers
 hadoop_reformat_namenode=True
 
 # Shared Edits Dir is needed for HA if multiple NameNodes are specified, so use only if more than one NameNode is specified
-# This directory must be a shared directory and accessible from all the NameNodes 
+# This directory must be a shared directory and accessible from all the NameNodes
 # (e.g. you have to set up a NFS share and mount it on all the NameNodes)
 # hadoop_hdfs_site={"dfs.namenode.shared.edits.dir": "/mnt/gpfs0/hdfs-ha"}
 
@@ -64,7 +64,7 @@ hadoop_sample_jar_urls=['https://repo1.maven.org/maven2/org/apache/hadoop/hadoop
 
 ```
 ansible-galaxy install andiveloper.hadoop
-ansible-playbook -i inventory.ini playbook.yml 
+ansible-playbook -i inventory.ini playbook.yml
 ```
 
 ## Testing your cluster setup

@@ -1,24 +1,28 @@
-- name: create directory Hadoop sample JARs
-  file:
+- name: Create directory Hadoop sample JARs
+  ansible.builtin.file:
     path: "{{ hadoop_target_dir }}/samples"
     state: directory
+    mode: "0500"
   tags: hadoop, hadoopInstallSampleJARs
 
-- debug:
-    msg: "{{hadoop_sample_jar_pkgs}}"
+- name: Debug message
+  ansible.builtin.debug:
+    msg: "{{ hadoop_sample_jar_pkgs }}"
 
-- name: copy sample jars
+- name: Copy sample jars
   when: hadoop_sample_jar_pkgs != None
-  copy:
-    src: "{{ item }}" 
+  ansible.builtin.copy:
+    src: "{{ item }}"
     dest: "{{ hadoop_target_dir }}/samples/{{ item.split('/')[-1] }}"
+    mode: "0500"
   with_list: "{{ hadoop_sample_jar_pkgs | default([]) }}"
   tags: hadoop, hadoopInstallSampleJARs
 
-- name: download Hadoop sample jars
+- name: Download Hadoop sample jars
   when: hadoop_sample_jar_pkgs == None
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ item }}"
     dest: "{{ hadoop_target_dir }}/samples/{{ item.split('/')[-1] }}"
+    mode: "0500"
   with_list: "{{ hadoop_sample_jar_urls | default([]) }}"
   tags: hadoop, hadoopInstallSampleJARs

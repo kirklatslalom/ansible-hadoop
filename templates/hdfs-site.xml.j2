@@ -11,7 +11,7 @@
     </property>
     {% set ns = { 'namenodes': 'nn1' } %}
     {% for node in groups['hadoop_namenodes'] %}
-        {% if not loop.first %}           
+        {% if not loop.first %}
             {% if ns.update({'namenodes': ns.namenodes + ',nn' + (loop.index0 + 1)|string }) %}{% endif %}
         {% endif %}
         <property>
@@ -27,7 +27,7 @@
         <name>dfs.ha.namenodes.{{ hadoop_cluster_name }}</name>
         <value>{{ ns.namenodes }}</value>
     </property>
-{% endif %}  
+{% endif %}
 {% set dict = hadoop_hdfs_site|combine(hadoop_hdfs_site_defaults) %}
 {% for key,value in dict.items() %}
     <property>

@@ -1,49 +1,49 @@
-- name: create nodemanager log dir
+- name: Create nodemanager log dir
   when: "'hadoop_managers' in group_names"
-  file:
+  ansible.builtin.file:
     path: "{{ hadoop_yarn_site['yarn.nodemanager.log-dirs'] | default(hadoop_yarn_site_defaults['yarn.nodemanager.log-dirs']) }}"
     state: directory
     mode: '774'
-  become: yes
+  become: true
   become_user: hdfs
-- name: create nodemanager local dir
+- name: Create nodemanager local dir
   when: "'hadoop_managers' in group_names"
-  file:
+  ansible.builtin.file:
     path: "{{ hadoop_yarn_site['yarn.nodemanager.local-dirs'] | default(hadoop_yarn_site_defaults['yarn.nodemanager.local-dirs']) }}"
     state: directory
     mode: '774'
-  become: yes
+  become: true
   become_user: hdfs
-- name: start manager nodes 1/2
-  block:  
-  - name: restart resourcemanager
-    include_tasks: ./restart_hadoop_service.yaml
+- name: Start manager nodes 1/2
+  become: true
+  become_user: yarn
+  block:
+  - name: Restart resourcemanager
+    ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
     vars:
       start_service: "{{ 'hadoop_managers' in group_names }}"
       hadoop_service_binary: yarn
       hadoop_service_name: resourcemanager
-  - name: restart nodemanager
-    include_tasks: ./restart_hadoop_service.yaml
+  - name: Restart nodemanager
+    ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
     vars:
       start_service: "{{ 'hadoop_managers' in group_names }}"
       hadoop_service_binary: yarn
       hadoop_service_name: nodemanager
-  - name: restart proxyserver
-    include_tasks: ./restart_hadoop_service.yaml
+  - name: Restart proxyserver
+    ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
     vars:
       start_service: "{{ 'hadoop_managers' in group_names }}"
       hadoop_service_binary: yarn
       hadoop_service_name: proxyserver
-  become: yes
-  become_user: yarn
 
-- name: start manager nodes 2/2
+- name: Start manager nodes 2/2
+  become: true
+  become_user: mapred
   block:
   - name: restart historyserver
-    include_tasks: ./restart_hadoop_service.yaml
+    ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
     vars:
       start_service: "{{ 'hadoop_managers' in group_names }}"
       hadoop_service_binary: mapred
       hadoop_service_name: historyserver
-  become: yes
-  become_user: mapred
