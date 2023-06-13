@@ -2,27 +2,27 @@
   become: true
   become_user: hdfs
   block:
-  - name: Stop all NameNodes and start only first NameNode
-    ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
-    vars:
-      start_service: "{{ inventory_hostname == groups['hadoop_namenodes'][0] }}"
-      hadoop_service_binary: hdfs
-      hadoop_service_name: namenode
+    - name: Stop all NameNodes and start only first NameNode
+      ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
+      vars:
+        start_service: "{{ inventory_hostname == groups['hadoop_namenodes'][0] }}"
+        hadoop_service_binary: hdfs
+        hadoop_service_name: namenode
 
-  - name: Transition first NameNode to active
-    when: groups['hadoop_namenodes']|length > 1 and inventory_hostname == groups['hadoop_namenodes'][0]
-    ansible.builtin.shell: "{{ hadoop_distro_home }}/bin/hdfs haadmin -transitionToActive --forceactive nn1"
-    register: result
-    retries: 3
-    until: result.rc == 0
+    - name: Transition first NameNode to active
+      when: groups['hadoop_namenodes']|length > 1 and inventory_hostname == groups['hadoop_namenodes'][0]
+      ansible.builtin.shell: "{{ hadoop_distro_home }}/bin/hdfs haadmin -transitionToActive --forceactive nn1"
+      register: result
+      retries: 3
+      until: result.rc == 0
 
-  - name: Bootstrap other NameNodes
-    when: groups['hadoop_namenodes']|length > 1 and inventory_hostname != groups['hadoop_namenodes'][0] and inventory_hostname in groups['hadoop_namenodes']
-    ansible.builtin.shell: "{{ hadoop_distro_home }}/bin/hdfs namenode -bootstrapStandby -force"
+    - name: Bootstrap other NameNodes
+      when: groups['hadoop_namenodes']|length > 1 and inventory_hostname != groups['hadoop_namenodes'][0] and inventory_hostname in groups['hadoop_namenodes']
+      ansible.builtin.shell: "{{ hadoop_distro_home }}/bin/hdfs namenode -bootstrapStandby -force"
 
-  - name: Start other NameNodes
-    when: groups['hadoop_namenodes']|length > 1 and inventory_hostname != groups['hadoop_namenodes'][0] and inventory_hostname in groups['hadoop_namenodes']
-    ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
-    vars:
-      hadoop_service_binary: hdfs
-      hadoop_service_name: namenode
+    - name: Start other NameNodes
+      when: groups['hadoop_namenodes']|length > 1 and inventory_hostname != groups['hadoop_namenodes'][0] and inventory_hostname in groups['hadoop_namenodes']
+      ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
+      vars:
+        hadoop_service_binary: hdfs
+        hadoop_service_name: namenode

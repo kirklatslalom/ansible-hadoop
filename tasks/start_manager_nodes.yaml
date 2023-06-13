@@ -18,32 +18,32 @@
   become: true
   become_user: yarn
   block:
-  - name: Restart resourcemanager
-    ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
-    vars:
-      start_service: "{{ 'hadoop_managers' in group_names }}"
-      hadoop_service_binary: yarn
-      hadoop_service_name: resourcemanager
-  - name: Restart nodemanager
-    ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
-    vars:
-      start_service: "{{ 'hadoop_managers' in group_names }}"
-      hadoop_service_binary: yarn
-      hadoop_service_name: nodemanager
-  - name: Restart proxyserver
-    ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
-    vars:
-      start_service: "{{ 'hadoop_managers' in group_names }}"
-      hadoop_service_binary: yarn
-      hadoop_service_name: proxyserver
+    - name: Restart resourcemanager
+      ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
+      vars:
+        start_service: "{{ 'hadoop_managers' in group_names }}"
+        hadoop_service_binary: yarn
+        hadoop_service_name: resourcemanager
+    - name: Restart nodemanager
+      ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
+      vars:
+        start_service: "{{ 'hadoop_managers' in group_names }}"
+        hadoop_service_binary: yarn
+        hadoop_service_name: nodemanager
+    - name: Restart proxyserver
+      ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
+      vars:
+        start_service: "{{ 'hadoop_managers' in group_names }}"
+        hadoop_service_binary: yarn
+        hadoop_service_name: proxyserver
 
 - name: Start manager nodes 2/2
   become: true
   become_user: mapred
   block:
-  - name: restart historyserver
-    ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
-    vars:
-      start_service: "{{ 'hadoop_managers' in group_names }}"
-      hadoop_service_binary: mapred
-      hadoop_service_name: historyserver
+    - name: Restart historyserver
+      ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
+      vars:
+        start_service: "{{ 'hadoop_managers' in group_names }}"
+        hadoop_service_binary: mapred
+        hadoop_service_name: historyserver

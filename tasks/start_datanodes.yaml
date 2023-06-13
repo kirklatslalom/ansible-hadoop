@@ -2,9 +2,9 @@
   become: true
   become_user: hdfs
   block:
-  - name: Restart datanode
-    ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
-    vars:
-      start_service: "{{ 'hadoop_datanodes' in group_names }}"
-      hadoop_service_binary: hdfs
-      hadoop_service_name: datanode
+    - name: Restart datanode
+      ansible.builtin.include_tasks: ./restart_hadoop_service.yaml
+      vars:
+        start_service: "{{ 'hadoop_datanodes' in group_names }}"
+        hadoop_service_binary: hdfs
+        hadoop_service_name: datanode

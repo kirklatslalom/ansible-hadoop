@@ -1,4 +1,4 @@
-
+---
 - name: Deploy Hadoop
   when: "'hadoop' in group_names"
   block:
