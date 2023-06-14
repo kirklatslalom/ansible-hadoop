@@ -1,13 +1,13 @@
 - name: Stop service {{ hadoop_service_name }}
   become: true
   when: stop_service is not defined or stop_service
-  ansible.builtin.shell: "{{ hadoop_distro_home }}/bin/{{ hadoop_service_binary }} \
+  ansible.builtin.shell: "sudo {{ hadoop_distro_home }}/bin/{{ hadoop_service_binary }} \
                           --daemon stop {{ hadoop_service_name }}"
 
 - name: Start service {{ hadoop_service_name }}
   become: true
   when: start_service is not defined or start_service
-  ansible.builtin.shell: "nohup {{ hadoop_distro_home }}/bin/{{ hadoop_service_binary }} \
+  ansible.builtin.shell: "nohup sudo {{ hadoop_distro_home }}/bin/{{ hadoop_service_binary }} \
                           --daemon start {{ hadoop_service_name }} && \
                           {{ hadoop_distro_home }}/bin/{{ hadoop_service_binary }} \
                           --daemon status {{ hadoop_service_name }}"
