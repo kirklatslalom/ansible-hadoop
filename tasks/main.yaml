@@ -8,6 +8,7 @@
           - wget
         state: present
       tags: hadoop, configureHadoop
+      become: true
 
     - name: Create Hadoop users
       ansible.builtin.import_tasks: ./create_hadoop_users.yaml
