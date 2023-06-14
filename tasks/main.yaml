@@ -1,6 +1,7 @@
 ---
 - name: Deploy Hadoop
   when: "'hadoop' in group_names"
+  become: true
   block:
     - name: Create dir
       ansible.builtin.file:
