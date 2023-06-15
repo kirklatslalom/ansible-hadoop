@@ -78,19 +78,19 @@
       ansible.builtin.import_tasks: ./start_namenodes.yaml
       tags: hadoop, startHadoopServices, startNameNodes
 
-    - name: Change owner of hdfs '/' to hdfs:hadoop
-      when: inventory_hostname == groups['hadoop_namenodes'][0]
-      ansible.builtin.shell: "{{ hadoop_distro_home }}/bin/hdfs dfs -chown hdfs:hadoop /"
-      become: true
-      become_user: hdfs
-      tags: hadoop, startHadoopServices, startNameNodes
+#    - name: Change owner of hdfs '/' to hdfs:hadoop
+#      when: inventory_hostname == groups['hadoop_namenodes'][0]
+#      ansible.builtin.shell: "{{ hadoop_distro_home }}/bin/hdfs dfs -chown hdfs:hadoop /"
+#      become: true
+#      become_user: hdfs
+#      tags: hadoop, startHadoopServices, startNameNodes
 
-    - name: Change permissions of hdfs '/' to 775
-      when: inventory_hostname == groups['hadoop_namenodes'][0]
-      ansible.builtin.shell: "{{ hadoop_distro_home }}/bin/hdfs dfs -chmod 775 /"
-      become: true
-      become_user: hdfs
-      tags: hadoop, startHadoopServices, startNameNodes
+#    - name: Change permissions of hdfs '/' to 775
+#      when: inventory_hostname == groups['hadoop_namenodes'][0]
+#      ansible.builtin.shell: "{{ hadoop_distro_home }}/bin/hdfs dfs -chmod 775 /"
+#      become: true
+#      become_user: hdfs
+#      tags: hadoop, startHadoopServices, startNameNodes
 
     - name: Start manager nodes
       ansible.builtin.import_tasks: ./start_manager_nodes.yaml
