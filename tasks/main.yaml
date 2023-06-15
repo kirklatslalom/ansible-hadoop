@@ -3,16 +3,11 @@
   when: "'hadoop' in group_names"
   become: true
   block:
-    - name: Create dir
-      ansible.builtin.file:
-        path: /var/lib/apt/
-        state: directory
-        mode: '0755'
-
     - name: Install needed packages
       ansible.builtin.package:
         name:
           - wget
+          - acl
         state: present
       tags: hadoop, configureHadoop
       become: true
